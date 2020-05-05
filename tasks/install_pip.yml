@@ -3,7 +3,9 @@
 - name: Install system dependencies
   package:
     name: "{{ mailman3_system_dependency_packages }}"
+    enablerepo: "epel"
   when: mailman3_install_system_dependencies
+  # ignore_errors: yes
 
 # This is a separate task from the next one because `python3 -m venv` doesn't install wheel and pip needs it to build
 # wheels (not strictly required, but preferred) and won't load it mid-invocation if installed during the next task
@@ -13,6 +15,12 @@
     virtualenv: "{{ mailman3_install_dir }}"
     virtualenv_python: "{{ mailman3_virtualenv_python | default(omit) }}"
     virtualenv_command: "{{ mailman3_virtualenv_command | default(omit) }}"
+
+- name: Install rcssmin without-c-extensions (due to wheel unavailability)
+  pip:
+    name: "rcssmin"
+    virtualenv: "{{ mailman3_install_dir }}"
+    extra_args: " --install-option=\"--without-c-extensions\""
 
 - name: Install Mailman and Python dependencies
   pip:
@@ -27,20 +35,25 @@
     mode: "{{ item.mode | default(omit) }}"
     state: directory
   with_items:
+    # Creates the parent /opt/mailman3
+    - path: "{{ mailman3_install_dir }}"
+      owner: "{{ __mailman3_user_name }}"
+      group: "{{ __mailman3_group_name }}"
+      mode: "0755"
     - path: "{{ mailman3_etc_dir }}"
       group: "{{ __mailman3_group_name }}"
-      mode: "0750"
-    # Creates the parent /var/opt/mailman3 with default permissions
-    - path: "{{ mailman3_var_dir | dirname }}"
+      mode: "0770"
     - path: "{{ mailman3_var_dir }}"
       owner: "{{ __mailman3_user_name }}"
       group: "{{ __mailman3_group_name }}"
-      mode: "0750"
+      mode: "0755"
     - path: "{{ mailman3_log_dir }}"
       owner: "{{ __mailman3_user_name }}"
       group: "{{ __mailman3_group_name }}"
-      mode: "0750"
+      mode: "0755"
     - path: "{{ mailman3_django_var_dir }}"
+      owner: "{{ mailman3_web_user }}"
+      group: "{{ mailman3_web_group }}"
     - path: "{{ mailman3_django_var_dir }}/run"
       owner: "{{ mailman3_web_user }}"
       group: "{{ mailman3_web_group }}"
@@ -58,13 +71,15 @@
       group: "{{ mailman3_web_group }}"
       mode: "0750"
     - path: "{{ mailman3_django_project_dir }}"
+      owner: "{{ mailman3_web_user }}"
       group: "{{ mailman3_web_group }}"
-      mode: "0750"
+      mode: "0770"
     - path: "{{ mailman3_django_log_dir }}"
-      mode: "0750"
+      mode: "0755"
       owner: "{{ mailman3_web_user }}"
       group: "{{ mailman3_web_group }}"
 
+# TODO: Object storage option?
 - name: Create HyperKitty attachment directory
   file:
     path: "{{ __mailman3_django_config_merged.hyperkitty_attachment_folder }}"

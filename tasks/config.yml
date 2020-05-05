@@ -165,6 +165,9 @@
   become_user: "{{ mailman3_web_user }}"
 
 # TODO: create additional domains (for right now the admin can do this in the UI)
+# 
+# note: add'l domains _in Django_, the below creates the listeners.  
+# maybe NGINX config here too?
 
 - name: Create/update uWSGI configuration file
   template:
