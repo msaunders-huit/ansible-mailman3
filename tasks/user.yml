@@ -9,7 +9,7 @@
 
 - name: Create mailman3 user
   user:
-    name: "{{ __mailman_user_name }}"
+    name: "{{ __mailman3_user_name }}"
     comment: "{{ (mailman3_user | default({})).comment | default(omit) }}"
     uid: "{{ (mailman3_user | default({})).uid | default(omit) }}"
     group: "{{ (mailman3_user | default({})).group | default(omit) }}"
