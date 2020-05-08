@@ -20,6 +20,7 @@ env = DJANGO_SETTINGS_MODULE=settings{{ '_' ~ domain | replace('.', '_') | repla
 
 # Port on which uwsgi will be listening.
 uwsgi-socket = {{ getsock(mailman3_uwsgi_socket) }}
+chmod-socket = 660
 {% if mailman3_http_socket is defined %}
 http-socket = {{ getsock(mailman3_http_socket) }}
 {% endif %}
