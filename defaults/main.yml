@@ -80,6 +80,7 @@ __mailman3_redhat_system_dependency_packages:
   - sassc
   - uwsgi
   - uwsgi-plugin-python36
+  - uwsgi-logger-file
 # TODO: as of `date`, compilers + python headers are required for these packages that don't have published cext wheels:
 #   - rcssmin
 #   - rjsmin
