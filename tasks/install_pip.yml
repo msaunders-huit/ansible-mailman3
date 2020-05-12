@@ -36,8 +36,11 @@
     - path: "{{ mailman3_etc_dir }}"
       group: "{{ __mailman3_group_name }}"
       mode: "0750"
-    # Creates the parent /var/opt/mailman3 with default permissions
+    # Creates the parent /opt/mailman3
     - path: "{{ mailman3_var_dir | dirname }}"
+      owner: "{{ __mailman3_user_name }}"
+      group: "{{ __mailman3_group_name }}"
+      mode: "0775"
     - path: "{{ mailman3_var_dir }}"
       owner: "{{ __mailman3_user_name }}"
       group: "{{ __mailman3_group_name }}"
@@ -45,7 +48,7 @@
     - path: "{{ mailman3_log_dir }}"
       owner: "{{ __mailman3_user_name }}"
       group: "{{ __mailman3_group_name }}"
-      mode: "0750"
+      mode: "0755"
     - path: "{{ mailman3_django_var_dir }}"
     - path: "{{ mailman3_django_var_dir }}/run"
       owner: "{{ mailman3_web_user }}"
@@ -67,7 +70,7 @@
       group: "{{ mailman3_web_group }}"
       mode: "0750"
     - path: "{{ mailman3_django_log_dir }}"
-      mode: "0750"
+      mode: "0755"
       owner: "{{ mailman3_web_user }}"
       group: "{{ mailman3_web_group }}"
 
