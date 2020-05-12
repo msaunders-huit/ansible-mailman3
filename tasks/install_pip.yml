@@ -33,14 +33,14 @@
     mode: "{{ item.mode | default(omit) }}"
     state: directory
   with_items:
-    - path: "{{ mailman3_etc_dir }}"
-      group: "{{ __mailman3_group_name }}"
-      mode: "0750"
     # Creates the parent /opt/mailman3
-    - path: "{{ mailman3_var_dir | dirname }}"
+    - path: "{{ base_dir | dirname }}"
       owner: "{{ __mailman3_user_name }}"
       group: "{{ __mailman3_group_name }}"
       mode: "0775"
+    - path: "{{ mailman3_etc_dir }}"
+      group: "{{ __mailman3_group_name }}"
+      mode: "0770"
     - path: "{{ mailman3_var_dir }}"
       owner: "{{ __mailman3_user_name }}"
       group: "{{ __mailman3_group_name }}"
