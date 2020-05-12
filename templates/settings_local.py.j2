@@ -130,7 +130,7 @@ DEFAULT_FROM_EMAIL = '{{ __mailman3_django_config_merged.default_from_email }}'
 SERVER_EMAIL = '{{ __mailman3_django_config_merged.server_email }}'
 
 # Change this when you have a real email backend
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = '{{ __mailman3_django_config_merged.email_backend | default('django.core.mail.backends.smtp.EmailBackend') }}'
 
 
 #
