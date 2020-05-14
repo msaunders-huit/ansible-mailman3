@@ -34,7 +34,7 @@
     state: directory
   with_items:
     # Creates the parent /opt/mailman3
-    - path: "{{ base_dir | dirname }}"
+    - path: "{{ base_dir }}"
       owner: "{{ __mailman3_user_name }}"
       group: "{{ __mailman3_group_name }}"
       mode: "0775"
