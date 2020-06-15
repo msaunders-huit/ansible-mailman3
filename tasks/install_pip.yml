@@ -4,6 +4,7 @@
   package:
     name: "{{ mailman3_system_dependency_packages }}"
   when: mailman3_install_system_dependencies
+  ignore_errors: yes
 
 # This is a separate task from the next one because `python3 -m venv` doesn't install wheel and pip needs it to build
 # wheels (not strictly required, but preferred) and won't load it mid-invocation if installed during the next task
