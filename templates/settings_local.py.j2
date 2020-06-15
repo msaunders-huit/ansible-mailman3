@@ -60,7 +60,8 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     #'django_mailman3.lib.auth.fedora',
-{% for provider in __mailman3_django_config_merged.socialaccount_providers | sort %}
+    'django_cas_ng',
+ {% for provider in __mailman3_django_config_merged.socialaccount_providers | sort %}
     'allauth.socialaccount.providers.{{ provider }}',
 {% endfor %}
 )
@@ -101,6 +102,7 @@ SECURE_PROXY_SSL_HEADER = ('{{ __mailman3_django_config_merged.secure_proxy_ssl_
 # CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_HTTPONLY = True
 # X_FRAME_OPTIONS = 'DENY'
+CAS_SERVER_URL = 'https://www.pin1.harvard.edu/cas/'
 
 
 # Internationalization
