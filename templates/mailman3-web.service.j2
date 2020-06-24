@@ -8,7 +8,7 @@ ConditionPathExists={{ mailman3_etc_dir }}/uwsgi{% if mailman3_domains is define
 ExecStart={{ mailman3_install_dir }}/bin/{{ mailman3_python_uwsgi_package }} --ini {{ mailman3_etc_dir }}/uwsgi{% if mailman3_domains is defined %}_%i{% endif %}.ini
 {# https://github.com/unbit/uwsgi/issues/1980 #}
 {% if mailman3_python_uwsgi_package == 'pyuwsgi' %}
-Environment=DJANGO_SETTINGS_MODULE=settings
+Environment=DJANGO_SETTINGS_MODULE=settings_%i
 {% endif %}
 Restart=on-failure
 KillSignal=SIGQUIT
