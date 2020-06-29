@@ -103,6 +103,19 @@ SECURE_PROXY_SSL_HEADER = ('{{ __mailman3_django_config_merged.secure_proxy_ssl_
 # CSRF_COOKIE_HTTPONLY = True
 # X_FRAME_OPTIONS = 'DENY'
 CAS_SERVER_URL = 'https://www.pin1.harvard.edu/cas/'
+CAS_APPLY_ATTRIBUTES_TO_USER = True
+CAS_USERNAME_ATTRIBUTE = 'mail'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'harvardkey_cas.backends.CASAuthBackend',
+)
+
+MIDDLEWARE_CLASSES = [
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_cas_ng.middleware.CASMiddleware',
+]
 
 
 # Internationalization
