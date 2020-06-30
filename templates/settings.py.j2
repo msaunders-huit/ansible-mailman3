@@ -134,7 +134,8 @@ STATICFILES_FINDERS = (
 # Django 1.6+ defaults to a JSON serializer, but it won't work with
 # django-openid, see
 # https://bugs.launchpad.net/django-openid-auth/+bug/1252826
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+# HUIT: not using openid, prefer not to use PickleSerializer
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 
 LOGIN_URL = 'account_login'
