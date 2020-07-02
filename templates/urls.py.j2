@@ -32,12 +32,12 @@ urlpatterns = [
     url(r'^{{ mailman3_postorius_root }}', include('postorius.urls')),
     url(r'^{{ mailman3_hyperkitty_root }}', include('hyperkitty.urls')),
     url(r'', include('django_mailman3.urls')),
-    url(r'^accounts/', include('allauth.urls')),
     url(r'^mailman/listinfo/(?P<path>.*)$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}/lists/%(path)s')),
     url(r'^mailman/admin/(?P<path>.*)$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}/lists/%(path)s')),
     path('accounts/login/', cas_ng_views.LoginView.as_view(), name='cas_ng_login'),
     path('accounts/logout/', cas_ng_views.LogoutView.as_view(), name='cas_ng_logout'),
     path('accounts/callback', cas_ng_views.CallbackView.as_view(), name='cas_ng_proxy_callback'),    
+    url(r'^accounts/', include('allauth.urls')),
     # Django admin
     url(r'^admin/', admin.site.urls),
 ]
