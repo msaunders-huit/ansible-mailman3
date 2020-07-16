@@ -33,6 +33,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = {{ 'True' if (__mailman3_django_config_merged.debug | default(false) | bool) else 'False' }}
 
+# Increase allowed upload size to ~50M
+DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
+FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
+
 # Application definition
 
 MIDDLEWARE = (
@@ -172,6 +176,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_UNIQUE_EMAIL  = True
 ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True # if true: use doesn't need to click a button to confirm email, just load the page
+
 #
 # django-compressor
 # https://pypi.python.org/pypi/django_compressor
@@ -233,10 +239,10 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'file':{
-            'level': 'INFO',
+            # 'level': 'INFO',
             #'class': 'logging.handlers.RotatingFileHandler',
             'class': 'logging.handlers.WatchedFileHandler',
-            'filename': os.path.join('{{ mailman3_django_log_dir }}', 'mailmansuite.log'),
+            'filename': os.path.join('/opt/mailman3/var/web/log', 'mailmansuite.log'),
             'formatter': 'verbose',
         },
         'console': {
@@ -248,22 +254,32 @@ LOGGING = {
         'django.request': {
             #'handlers': ['mail_admins', 'file'],
             'handlers': ['file'],
-            'level': 'ERROR',
+            'level': 'INFO',
             'propagate': True,
         },
         'django': {
             'handlers': ['file'],
-            'level': 'ERROR',
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.core.mail': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
         'hyperkitty': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
         'postorius': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
+        },
+        'django_mailman3': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
     },
     'formatters': {
@@ -274,10 +290,10 @@ LOGGING = {
             'format': '%(levelname)s %(message)s'
         },
     },
-    #'root': {
+    # 'root': {
     #    'handlers': ['file'],
     #    'level': 'INFO',
-    #},
+    # },
 }
 
 

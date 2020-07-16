@@ -1,0 +1,10 @@
+Your authorization is required for a mailing list unsubscription
+request approval:
+
+    For:  $member
+    List: $listname
+
+At your convenience, visit your dashboard to approve or deny the
+request.
+
+    https://web.${domain}/mailman/lists/${list_id}/subscription_requests

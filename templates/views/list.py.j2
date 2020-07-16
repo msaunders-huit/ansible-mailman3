@@ -1,0 +1,136 @@
+# -*- coding: utf-8 -*-
+# Copyright (C) 1998-2019 by the Free Software Foundation, Inc.
+#
+# This file is part of Postorius.
+#
+# Postorius is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# Postorius is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# Postorius.  If not, see <http://www.gnu.org/licenses/>.
+
+
+import csv
+import email.utils
+import logging
+import sys
+from urllib.error import HTTPError
+
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.forms import formset_factory
+from django.http import Http404, HttpResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.utils.translation import gettext as _
+from django.views.decorators.http import require_http_methods
+
+from allauth.account.models import EmailAddress
+from django_mailman3.lib.mailman import get_mailman_client
+from django_mailman3.lib.paginator import MailmanPaginator, paginate
+from django_mailman3.models import MailDomain
+from django_mailman3.signals import (
+    mailinglist_created, mailinglist_deleted, mailinglist_modified)
+
+from postorius.auth.decorators import (
+    list_moderator_required, list_owner_required, superuser_required)
+from postorius.auth.mixins import ListOwnerMixin
+from postorius.forms import (
+    ListNew
+    )
+from postorius.forms.list_forms import ACTION_CHOICES
+from postorius.models import Domain, List, Mailman404Error, Style
+from postorius.views.generic import MailingListView, bans_view
+
+
+logger = logging.getLogger(__name__)
+
+
+def _get_choosable_domains(request):
+    domains = Domain.objects.all()
+    return [(d.mail_host, d.mail_host) for d in domains]
+
+
+def _get_choosable_styles(request):
+    styles = Style.objects.all()
+    options = [(style['name'], style['description'])
+               for style in styles['styles']]
+    return options
+
+
+def _get_default_style():
+    return Style.objects.all()['default']
+
+
+@login_required
+@superuser_required
+def list_new(request, template='postorius/lists/new.html'):
+    """
+    Add a new mailing list.
+    If the request to the function is a GET request an empty form for
+    creating a new list will be displayed. If the request method is
+    POST the form will be evaluated. If the form is considered
+    correct the list gets created and otherwise the form with the data
+    filled in before the last POST request is returned. The user must
+    be logged in to create a new list.
+    """
+    mailing_list = None
+    choosable_domains = [('', _('Choose a Domain'))]
+    choosable_domains += _get_choosable_domains(request)
+    choosable_styles = _get_choosable_styles(request)
+    if request.method == 'POST':
+        form = ListNew(choosable_domains, choosable_styles, request.POST)
+        if form.is_valid():
+            # grab domain
+            domain = Domain.objects.get_or_404(
+                mail_host=form.cleaned_data['mail_host'])
+            # creating the list
+            try:
+                mailing_list = domain.create_list(
+                    form.cleaned_data['listname'],
+                    style_name=form.cleaned_data['list_style'])
+                mailing_list.add_owner(form.cleaned_data['list_owner'])
+                list_settings = mailing_list.settings
+                if form.cleaned_data['description']:
+                    list_settings["description"] = \
+                        form.cleaned_data['description']
+                list_settings["advertised"] = form.cleaned_data['advertised']
+                list_settings.save()
+                messages.success(request, _("List created"))
+                mailinglist_created.send(sender=List,
+                                         list_id=mailing_list.list_id)
+                return redirect("list_summary",
+                                list_id=mailing_list.list_id)
+            # TODO catch correct Error class:
+            except HTTPError as e:
+                # Right now, there is no good way to detect that this is a
+                # duplicate mailing list request other than checking the
+                # reason for 400 error.
+                if e.reason == 'Mailing list exists':
+                    form.add_error(
+                        'listname', _('Mailing List already exists.'))
+                    return render(request, template, {'form': form})
+                # Otherwise just render the generic error page.
+                return render(request, 'postorius/errors/generic.html',
+                              {'error': e.msg})
+        else:
+            messages.error(request, _('Please check the errors below'))
+    else:
+        form = ListNew(choosable_domains, choosable_styles, initial={
+            'list_owner': request.user.email,
+            'advertised': False,
+            'list_style': _get_default_style(),
+            })
+    return render(request, template, {'form': form})
+

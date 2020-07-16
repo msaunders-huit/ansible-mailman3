@@ -1,5 +1,5 @@
 galaxy_info:
-  author: natefoo
+  author: natefoo, msaunders-huit
   description: Mailman 3 installation, configuration, and management for Linux
   company: The Galaxy Project
   license: license (MIT)
@@ -8,6 +8,7 @@ galaxy_info:
     - name: EL
       versions:
         - 7
+        - 8
     - name: Debian
       versions:
         - stretch

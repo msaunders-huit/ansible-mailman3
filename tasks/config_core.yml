@@ -1,0 +1,22 @@
+---
+
+- name: Create/update Mailman Core configuration
+  template:
+    src: mailman.cfg.j2
+    dest: "{{ mailman3_etc_dir }}/mailman.cfg"
+    group: "{{ __mailman3_group_name }}"
+    mode: "0640"
+    backup: "{{ mailman3_backup_configs }}"
+  notify:
+    - restart mailman3-core service
+
+- name: Create HyperKitty configuration file
+  copy:
+    content: |
+      [general]
+      base_url: https://{{ mailman3_hyperkitty_hostname }}/{{ mailman3_hyperkitty_root }}
+      api_key: {{ mailman3_archiver_key }}
+    dest: "{{ mailman3_etc_dir }}/hyperkitty.cfg"
+    group: "{{ __mailman3_group_name }}"
+  notify:
+    - restart mailman3-core service

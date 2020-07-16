@@ -3,19 +3,46 @@
 - name: Include user creation tasks
   include_tasks: user.yml
   when: mailman3_create_user
+  tags: preparation
 
 - name: Include group discovery tasks
   import_tasks: group_discovery.yml
 
-- name: Include installation tasks
+- name: Include generic installation tasks
   import_tasks: "install_{{ mailman3_install_method }}.yml"
+  tags: installation
 
-- name: Include configuration tasks
-  import_tasks: config.yml
+- name: Include core installation tasks
+  include_tasks: "install_core_{{ mailman3_install_method }}.yml"
+  tags: 
+    - installation
+    - core
+  when: "'tag_tier_app' in group_names"
+
+- name: Include core configuration tasks
+  include_tasks: config_core.yml
+  tags: 
+    - configuration
+    - core
+  when: "'tag_tier_app' in group_names"
+
+- name: Include web installation tasks
+  include_tasks: "install_web_{{ mailman3_install_method }}.yml"
+  tags: 
+    - installation
+    - web
+  when: "'tag_tier_web' in group_names"
+
+- name: Include web configuration tasks
+  include_tasks: config_web.yml
+  tags: 
+    - configuration
+    - web
+  when: "'tag_tier_web' in group_names"
 
 - name: Include Postfix map distribution tasks
   include_tasks: distribute_maps.yml
-  when: mailman3_distribute_maps is defined
+  when: mailman3_distribute_maps is defined and "'tag_tier_app' in group_names"
 
 # Perform whatever restarts are needed now, prevents double restart on first run
 - name: Flush handlers
@@ -26,7 +53,8 @@
     name: "{{ mailman3_core_service_name }}"
     enabled: yes
     state: started
-  when: mailman3_process_manager != "supervisor"
+  when: mailman3_process_manager != "supervisor" and 'tag_tier_app' in group_names
+  ignore_errors: yes
 
 - name: Ensure Mailman Web is enabled and running
   service:
@@ -34,4 +62,4 @@
     enabled: yes
     state: started
   loop: "{{ mailman3_domains | default(['']) }}"
-  when: mailman3_process_manager != "supervisor"
+  when: mailman3_process_manager != "supervisor" and 'tag_tier_web' in group_names

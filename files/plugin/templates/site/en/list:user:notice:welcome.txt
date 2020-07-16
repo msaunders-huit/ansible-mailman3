@@ -1,0 +1,12 @@
+Welcome to the "$display_name" mailing list!
+
+To post to this list, send your email to:
+
+  $listname
+
+To change your subscription settings, Use HarvardKey
+to access this website:
+
+  https://web.${domain}/mailman/accounts/subscriptions/
+
+Have a nice day!

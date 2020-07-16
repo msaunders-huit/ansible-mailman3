@@ -11,10 +11,20 @@
   user:
     name: "{{ __mailman3_user_name }}"
     comment: "{{ (mailman3_user | default({})).comment | default(omit) }}"
-    uid: "{{ (mailman3_user | default({})).uid | default(omit) }}"
+    uid: 400 # Fail if this isn't what EFS expects "{{ (mailman3_user | default({})).uid | default(omit) }}"
     group: "{{ (mailman3_user | default({})).group | default(omit) }}"
     groups: "{{ (mailman3_user | default({})).groups | default(omit) }}"
     home: "{{ (mailman3_user | default({})).home | default(mailman3_var_dir) }}"
     create_home: "{{ (mailman3_user | default({})).create_home | default('no') }}"
     shell: "{{ (mailman3_user | default({})).shell | default(omit) }}"
     system: "{{ (mailman3_user | default({})).system | default('yes') }}"
+
+- name: Control whether 'mailman' user has passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^mailman'
+    line: 'mailman ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  when: "'tag_tier_web' in group_names"
+
