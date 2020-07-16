@@ -1,0 +1,34 @@
+---
+
+
+- name: Create core configuration, data, and state directories
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
+    state: directory
+  with_items:
+    - path: "{{ mailman3_etc_dir }}"
+      group: "{{ __mailman3_group_name }}"
+      mode: "0770"
+    - path: "{{ mailman3_var_dir }}"
+      owner: "{{ __mailman3_user_name }}"
+      group: "{{ __mailman3_group_name }}"
+      mode: "0755"
+    - path: "{{ mailman3_log_dir }}"
+      owner: "{{ __mailman3_user_name }}"
+      group: "{{ __mailman3_group_name }}"
+      mode: "0755"
+
+- name: Install core systemd service unit files
+  template:
+    src: "{{ item.src | default(item) }}.j2"
+    dest: /etc/systemd/system/{{ item.dest | default(item) }}
+  loop:
+    - mailman3-core.service
+  loop_control:
+    label: "{{ item.dest | default(item) }}"
+  when: mailman3_process_manager == 'systemd'
+  notify:
+    - reload systemd manager configuration
