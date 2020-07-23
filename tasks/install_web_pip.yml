@@ -8,6 +8,9 @@
     mode: "{{ item.mode | default(omit) }}"
     state: directory
   with_items:
+    - path: "{{ mailman3_etc_dir }}"
+      group: "{{ __mailman3_group_name }}"
+      mode: "0770"
     - path: "{{ mailman3_django_var_dir }}"
       owner: "{{ mailman3_web_user }}"
       group: "{{ mailman3_web_group }}"
