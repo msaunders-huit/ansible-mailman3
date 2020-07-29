@@ -67,6 +67,7 @@
   become_user: "{{ mailman3_web_user }}"
   #become_method: su
   #become_flags: '-s /bin/sh'
+  run_once: yes
   notify:
     - restart mailman3-web service
 
@@ -93,6 +94,7 @@
   # FIXME:
   become: yes
   become_user: "{{ mailman3_web_user }}"
+  run_once: yes
 
 - name: Create Django superusers
   django_manage:
@@ -112,6 +114,7 @@
   # FIXME:
   become: yes
   become_user: "{{ mailman3_web_user }}"
+  run_once: yes
 
 - name: Check Django sites
   django_manage:
@@ -126,6 +129,7 @@
   # FIXME:
   become: yes
   become_user: "{{ mailman3_web_user }}"
+  run_once: yes
 
 - name: Correct default Django site
   django_manage:
@@ -142,6 +146,7 @@
   # FIXME:
   become: yes
   become_user: "{{ mailman3_web_user }}"
+  run_once: yes
 
 # TODO: create additional domains (for right now the admin can do this in the UI)
 # 
