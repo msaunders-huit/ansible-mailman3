@@ -39,13 +39,18 @@
       owner: "{{ mailman3_web_user }}"
       group: "{{ mailman3_web_group }}"
 
-# TODO: Object storage option?
+# TODO: mount EFS and link dir (note IP address for mount and output of ls)
+# ansible -m shell mailman_web -a "mkdir /efs;mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport 10.138.67.36:/ /efs" --become
+# ansible -m shell mailman_web -a "rm -rf /opt/mailman3/attachments; ln -sF /efs/ /opt/mailman3/attachments" --become --become-user=mailman
+# ansible -m shell mailman_web -a "chown mailman:nginx /opt/mailman3/attachments/;chmod 770 /opt/mailman3/attachments/" --become
+# ansible -m shell mailman_web -a "ls /opt/mailman3/attachments/" --become --become-user=mailman
+# > drwxrwx---.  3 mailman nginx   6144 Jul 31 13:18 .
 - name: Create HyperKitty attachment directory
   file:
     path: "{{ __mailman3_django_config_merged.hyperkitty_attachment_folder }}"
     owner: "{{ mailman3_web_user }}"
     group: "{{ mailman3_web_group }}"
-    mode: "0750"
+    mode: "0770"
     state: directory
   when: __mailman3_django_config_merged.hyperkitty_attachment_folder is defined
 
