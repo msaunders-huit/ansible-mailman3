@@ -39,8 +39,19 @@
       owner: "{{ mailman3_web_user }}"
       group: "{{ mailman3_web_group }}"
 
-# TODO: mount EFS and link dir (note IP address for mount and output of ls)
-# ansible -m shell mailman_web -a "mkdir /efs;mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport 10.138.67.36:/ /efs" --become
+- name: Link attach dir to efs
+  file:
+    path: "{{ __mailman3_django_config_merged.hyperkitty_attachment_folder }}" # required. Path to the file being managed.
+    src: /efs # not required. path of the file to link to (applies only to C(state=link) and C(state=hard)). Will accept absolute, relative and nonexisting paths. Relative paths are relative to the file being created (C(path)) which is how the UNIX command C(ln -s SRC DEST) treats relative paths.
+    group: "{{ mailman3_web_group }}" # not required. Name of the group that should own the file/directory, as would be fed to I(chown).
+    state: link # not required. choices: absent;directory;file;hard;link;touch. If C(directory), all intermediate subdirectories will be created if they do not exist. Since Ansible 1.7 they will be created with the supplied permissions. If C(file), the file will NOT be created if it does not exist; see the C(touch) value or the M(copy) or M(template) module if you want that behavior.  If C(link), the symbolic link will be created or changed. Use C(hard) for hardlinks. If C(absent), directories will be recursively deleted, and files or symlinks will be unlinked. Note that C(absent) will not cause C(file) to fail if the C(path) does not exist as the state did not change. If C(touch) (new in 1.4), an empty file will be created if the C(path) does not exist, while an existing file or directory will receive updated file access and modification times (similar to the way `touch` works from the command line).
+    mode: 0770 # not required. Mode the file or directory should be. For those used to I(/usr/bin/chmod) remember that modes are actually octal numbers. You must either add a leading zero so that Ansible's YAML parser knows it is an octal number (like C(0644) or C(01777)) or quote it (like C('644') or C('1777')) so Ansible receives a string and can do its own conversion from string into number.  Giving Ansible a number without following one of these rules will end up with a decimal number which will have unexpected results. As of version 1.8, the mode may be specified as a symbolic mode (for example, C(u+rwx) or C(u=rw,g=r,o=r)).
+    owner: "{{ mailman3_web_user }}" # not required. Name of the user that should own the file/directory, as would be fed to I(chown).
+  when: __mailman3_django_config_merged.hyperkitty_attachment_folder is defined and 1 == 1
+
+# TODO: if using EFS and attachment dir...
+# if /efs and hyperkitty_attachment_folder is defined,
+# link /efs to hyperkitty_attachment_folder
 # ansible -m shell mailman_web -a "rm -rf /opt/mailman3/attachments; ln -sF /efs/ /opt/mailman3/attachments" --become --become-user=mailman
 # ansible -m shell mailman_web -a "chown mailman:nginx /opt/mailman3/attachments/;chmod 770 /opt/mailman3/attachments/" --become
 # ansible -m shell mailman_web -a "ls /opt/mailman3/attachments/" --become --become-user=mailman
@@ -52,7 +63,7 @@
     group: "{{ mailman3_web_group }}"
     mode: "0770"
     state: directory
-  when: __mailman3_django_config_merged.hyperkitty_attachment_folder is defined
+  when: __mailman3_django_config_merged.hyperkitty_attachment_folder is defined and 0 == 1
 
 - name: Install web systemd service unit files
   template:
