@@ -65,6 +65,14 @@
     state: directory
   when: __mailman3_django_config_merged.hyperkitty_attachment_folder is defined and 0 == 1
 
+# If this isn't done the file will be owner by root and a 500 error will be returned
+- name: Touch log file as mailman
+  file:
+      path: "{{ mailman3_django_log_dir }}/mailmansuite.log"
+      state: touch
+      owner: "{{ mailman3_web_user }}"
+      group: "{{ mailman3_web_group }}"
+
 - name: Install web systemd service unit files
   template:
     src: "{{ item.src | default(item) }}.j2"
