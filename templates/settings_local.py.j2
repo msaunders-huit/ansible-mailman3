@@ -20,6 +20,7 @@ ALLOWED_HOSTS = [
     # Add here all production URLs you may have.
 {% for host in __mailman3_django_config_merged.allowed_hosts %}
     "{{ host }}",
+    "web.{{ host }}",
 {% endfor %}
     "{{ mailman3_core_api_hostname }}",
     "{{ mailman3_hyperkitty_hostname }}",
