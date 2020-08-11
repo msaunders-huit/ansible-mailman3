@@ -24,6 +24,7 @@ ALLOWED_HOSTS = [
 {% endfor %}
     "{{ mailman3_core_api_hostname }}",
     "{{ mailman3_hyperkitty_hostname }}",
+    "{{ ansible_host }}",
 ]
 
 # Mailman API credentials
