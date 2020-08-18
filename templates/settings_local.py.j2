@@ -109,6 +109,8 @@ SECURE_PROXY_SSL_HEADER = ('{{ __mailman3_django_config_merged.secure_proxy_ssl_
 CAS_SERVER_URL = 'https://www.pin1.harvard.edu/cas/'
 CAS_APPLY_ATTRIBUTES_TO_USER = True
 CAS_USERNAME_ATTRIBUTE = 'mail'
+CAS_REDIRECT_URL = 'account_email'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
