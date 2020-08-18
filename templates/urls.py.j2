@@ -22,6 +22,9 @@ from django.contrib import admin
 from django.urls import path, reverse_lazy
 from django.views.generic import RedirectView
 
+# Override user_profile view for TZ patch
+from views.profile import user_profile
+
 import django_cas_ng.views as cas_ng_views
 urlpatterns = [
 {% if mailman3_postorius_root %}
@@ -32,6 +35,7 @@ urlpatterns = [
     url(r'^{{ mailman3_postorius_root }}', include('postorius.urls')),
     url(r'^{{ mailman3_hyperkitty_root }}', include('hyperkitty.urls')),
     url(r'', include('django_mailman3.urls')),
+    url(r'^user-profile/$', user_profile, name='mm_user_profile'),
     url(r'^mailman/listinfo/(?P<path>.*)?/$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}lists/%(path)s.{{ mailman3_domains[0] }}')),
     url(r'^mailman/admin/(?P<path>.*)?/$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}lists/%(path)s.{{ mailman3_domains[0] }}')),
     url(r'^mailman/private/(?P<path>.*)?/$', RedirectView.as_view(url='/{{ mailman3_hyperkitty_root }}list/%(path)s@{{ mailman3_domains[0] }}')),
