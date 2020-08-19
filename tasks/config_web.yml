@@ -15,6 +15,10 @@
       mode: "0644"
     - name: wsgi.py
       mode: "0644"
+    - name: forms.py
+      mode: "0644"
+    - name: views/profile.py
+      mode: "0644"
   when: __mailman3_pip
   notify:
     - restart mailman3-web service
