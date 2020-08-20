@@ -12,23 +12,23 @@
 
 - name: Include core installation tasks
   import_tasks: "install_core_{{ mailman3_install_method }}.yml"
-  when: "'tag_tier_core' in group_names"
+  when: "'mailman_core' in group_names"
 
 - name: Include core configuration tasks
   import_tasks: config_core.yml
-  when: "'tag_tier_core' in group_names"
+  when: "'mailman_core' in group_names"
 
 - name: Include web installation tasks
   import_tasks: "install_web_{{ mailman3_install_method }}.yml"
-  when: "'tag_tier_web' in group_names"
+  when: "'mailman_web' in group_names"
 
 - name: Include web configuration tasks
   import_tasks: config_web.yml
-  when: "'tag_tier_web' in group_names"
+  when: "'mailman_web' in group_names"
 
 - name: Include Postfix map distribution tasks
   include_tasks: distribute_maps.yml
-  when: mailman3_distribute_maps is defined and "'tag_tier_core' in group_names"
+  when: mailman3_distribute_maps is defined and "'mailman_core' in group_names"
 
 # Perform whatever restarts are needed now, prevents double restart on first run
 - name: Flush handlers
@@ -39,7 +39,7 @@
     name: "{{ mailman3_core_service_name }}"
     enabled: yes
     state: started
-  when: mailman3_process_manager != "supervisor" and 'tag_tier_core' in group_names
+  when: mailman3_process_manager != "supervisor" and 'mailman_core' in group_names
   ignore_errors: yes
 
 - name: Ensure Mailman Web is enabled and running
@@ -48,4 +48,4 @@
     enabled: yes
     state: started
   loop: "{{ mailman3_domains | default(['']) }}"
-  when: mailman3_process_manager != "supervisor" and 'tag_tier_web' in group_names
+  when: mailman3_process_manager != "supervisor" and 'mailman_web' in group_names
