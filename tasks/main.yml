@@ -3,27 +3,33 @@
 - name: Include user creation tasks
   include_tasks: user.yml
   when: mailman3_create_user
+  tags: preparation
 
 - name: Include group discovery tasks
   import_tasks: group_discovery.yml
 
 - name: Include generic installation tasks
   import_tasks: "install_{{ mailman3_install_method }}.yml"
+  tags: installation
 
 - name: Include core installation tasks
-  import_tasks: "install_core_{{ mailman3_install_method }}.yml"
+  include_tasks: "install_core_{{ mailman3_install_method }}.yml"
+  tags: installation
   when: "'tag_tier_core' in group_names"
 
 - name: Include core configuration tasks
-  import_tasks: config_core.yml
+  include_tasks: config_core.yml
+  tags: configuration
   when: "'tag_tier_core' in group_names"
 
 - name: Include web installation tasks
-  import_tasks: "install_web_{{ mailman3_install_method }}.yml"
+  include_tasks: "install_web_{{ mailman3_install_method }}.yml"
+  tags: installation
   when: "'tag_tier_web' in group_names"
 
 - name: Include web configuration tasks
-  import_tasks: config_web.yml
+  include_tasks: config_web.yml
+  tags: configuration
   when: "'tag_tier_web' in group_names"
 
 - name: Include Postfix map distribution tasks
