@@ -32,3 +32,11 @@
   when: mailman3_process_manager == 'systemd'
   notify:
     - reload systemd manager configuration
+
+- name: Copy Mailman Core plugin to core server
+  copy:
+      dest: "{{ mailman3_install_dir }}/bin/"
+      src: files/plugin
+      owner: "{{ __mailman3_user_name }}"
+      group: "{{ __mailman3_group_name }}"
+      backup: no
