@@ -14,22 +14,30 @@
 
 - name: Include core installation tasks
   include_tasks: "install_core_{{ mailman3_install_method }}.yml"
-  tags: installation
+  tags: 
+    - installation
+    - core
   when: "'tag_tier_core' in group_names"
 
 - name: Include core configuration tasks
   include_tasks: config_core.yml
-  tags: configuration
+  tags: 
+    - configuration
+    - core
   when: "'tag_tier_core' in group_names"
 
 - name: Include web installation tasks
   include_tasks: "install_web_{{ mailman3_install_method }}.yml"
-  tags: installation
+  tags: 
+    - installation
+    - web
   when: "'tag_tier_web' in group_names"
 
 - name: Include web configuration tasks
   include_tasks: config_web.yml
-  tags: configuration
+  tags: 
+    - configuration
+    - web
   when: "'tag_tier_web' in group_names"
 
 - name: Include Postfix map distribution tasks
