@@ -109,8 +109,8 @@ SECURE_PROXY_SSL_HEADER = ('{{ __mailman3_django_config_merged.secure_proxy_ssl_
 CAS_SERVER_URL = 'https://www.pin1.harvard.edu/cas/'
 CAS_APPLY_ATTRIBUTES_TO_USER = True
 CAS_USERNAME_ATTRIBUTE = 'mail'
-CAS_REDIRECT_URL = 'account_email' # TODO: redirect hkey logins to the email page until welcome email is being sent
-CAS_IGNORE_REFERER = True # force hkey login redirect on every login
+# CAS_REDIRECT_URL = 'account_email' # redirect hkey logins to the email page
+# CAS_IGNORE_REFERER = True # force hkey login redirect on every login 
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
