@@ -22,8 +22,6 @@ from django.contrib import admin
 from django.urls import path, reverse_lazy
 from django.views.generic import RedirectView
 
-# Override user_profile view for TZ patch
-from views.profile import user_profile
 # Override list_new view to hide lists by default
 from views.list import list_new
 
