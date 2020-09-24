@@ -36,7 +36,6 @@ urlpatterns = [
     url(r'^mailman/', include('postorius.urls')),
     url(r'^archive/', include('hyperkitty.urls')),
     url(r'', include('django_mailman3.urls')),
-    url(r'^user-profile/$', user_profile, name='mm_user_profile'),
     url(r'^mailman/listinfo/(?P<path>.*)?/$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}lists/%(path)s.{{ mailman3_domains[0] }}')),
     url(r'^mailman/admin/(?P<path>.*)?/$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}lists/%(path)s.{{ mailman3_domains[0] }}')),
     url(r'^mailman/private/(?P<path>.*)?/$', RedirectView.as_view(url='/{{ mailman3_hyperkitty_root }}list/%(path)s@{{ mailman3_domains[0] }}')),
