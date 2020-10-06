@@ -26,6 +26,7 @@
   pip:
     name: "{{ mailman3_packages + mailman3_extra_packages }}"
     virtualenv: "{{ mailman3_install_dir }}"
+    state: forcereinstall
     
 - name: Create parent install directory
   file:
