@@ -1,4 +1,4 @@
-The mailing list '📭 $listname' has just been created for you.  The
+The mailing list '$listname' has just been created for you.  The
 following is some basic information about your mailing list.
 
 There is an email-based interface for users (not administrators) of your list;
@@ -8,3 +8,5 @@ as subject or in the body, to:
     $request_email
 
 Please address all questions to $site_email.
+
+on $domain

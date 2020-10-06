@@ -1,4 +1,4 @@
-Your request to the 📭 $listname mailing list
+Your request to the $listname mailing list
 
     $request
 

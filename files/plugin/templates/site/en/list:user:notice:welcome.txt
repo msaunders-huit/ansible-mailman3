@@ -2,7 +2,7 @@ Welcome to the "$display_name" mailing list!
 
 To post to this list, send your email to:
 
-  📭 $listname
+  $listname
 
   $site_url
 

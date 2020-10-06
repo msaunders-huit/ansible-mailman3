@@ -1,5 +1,5 @@
 Send $display_name mailing list submissions to
-	📭 $listname
+	$listname
 
 To subscribe or unsubscribe via email, send a message with subject or body
 'help' to

@@ -1,4 +1,4 @@
-Help for 📭 $listname mailing list
+Help for $listname mailing list
 
 This is email command 'help' for version $version of the GNU Mailman list
 manager at $domain.  The following describes commands you can send to get

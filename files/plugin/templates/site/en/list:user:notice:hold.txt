@@ -1,4 +1,4 @@
-Your mail to '📭 $listname' with the subject
+Your mail to '$listname' with the subject
 
     $subject
 
