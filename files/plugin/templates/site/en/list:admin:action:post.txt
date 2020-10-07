@@ -7,9 +7,8 @@ following mailing list posting:
 
 The message is being held because:
 
-$reasons
+    $reasons
 
-At your convenience, visit your dashboard to approve or deny the
-request.
+At your convenience, visit your dashboard to approve or deny the request.
 
-https://web.${domain}/mailman/lists/${list_id}/held_messages
+    https://web.${domain}/mailman/lists/${list_id}/held_messages
