@@ -258,6 +258,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'django.core.mail': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
         'hyperkitty': {
             'handlers': ['file'],
             'level': 'INFO',
