@@ -48,9 +48,9 @@ __mailman3_pip: "{{ mailman3_install_method == 'pip' }}"
 # pip needed packages if using the pip install method, system packages if using the package method
 __mailman3_pip_packages:
   # - django-mailman3==1.3.4
+  # - postorius==1.3.3
+  # - hyperkitty==1.3.3
   - mailman
-  - postorius
-  - hyperkitty
   - mailman-hyperkitty
   - whoosh
   - "{{ mailman3_python_uwsgi_package }}"
