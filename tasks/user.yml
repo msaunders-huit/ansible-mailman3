@@ -18,3 +18,11 @@
     create_home: "{{ (mailman3_user | default({})).create_home | default('no') }}"
     shell: "{{ (mailman3_user | default({})).shell | default(omit) }}"
     system: "{{ (mailman3_user | default({})).system | default('yes') }}"
+
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%mailman'
+    line: '%mailman ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
