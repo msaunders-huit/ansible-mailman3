@@ -19,10 +19,10 @@
     shell: "{{ (mailman3_user | default({})).shell | default(omit) }}"
     system: "{{ (mailman3_user | default({})).system | default('yes') }}"
 
-- name: Allow 'mailman' group to have passwordless sudo
+- name: Control whether 'mailman' group has passwordless sudo
   lineinfile:
     dest: /etc/sudoers
-    state: present
+    state: absent
     regexp: '^%mailman'
     line: '%mailman ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
