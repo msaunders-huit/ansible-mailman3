@@ -22,7 +22,7 @@
 - name: Control whether 'mailman' group has passwordless sudo
   lineinfile:
     dest: /etc/sudoers
-    state: absent
+    state: present # absent
     regexp: '^%mailman'
     line: '%mailman ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
