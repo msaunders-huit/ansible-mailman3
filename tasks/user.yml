@@ -19,7 +19,7 @@
     shell: "{{ (mailman3_user | default({})).shell | default(omit) }}"
     system: "{{ (mailman3_user | default({})).system | default('yes') }}"
 
-- name: Allow 'wheel' group to have passwordless sudo
+- name: Allow 'mailman' group to have passwordless sudo
   lineinfile:
     dest: /etc/sudoers
     state: present
