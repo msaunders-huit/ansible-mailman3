@@ -11,7 +11,7 @@
   user:
     name: "{{ __mailman3_user_name }}"
     comment: "{{ (mailman3_user | default({})).comment | default(omit) }}"
-    uid: "{{ (mailman3_user | default({})).uid | default(omit) }}"
+    uid: 400 # Fail if this isn't what EFS expects "{{ (mailman3_user | default({})).uid | default(omit) }}"
     group: "{{ (mailman3_user | default({})).group | default(omit) }}"
     groups: "{{ (mailman3_user | default({})).groups | default(omit) }}"
     home: "{{ (mailman3_user | default({})).home | default(mailman3_var_dir) }}"
