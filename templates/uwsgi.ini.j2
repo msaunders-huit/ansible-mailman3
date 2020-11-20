@@ -24,6 +24,7 @@ chmod-socket = 660
 {% if mailman3_http_socket is defined %}
 http-socket = {{ getsock(mailman3_http_socket) }}
 {% endif %}
+buffer-size = 8192
 
 # Enable threading for python
 enable-threads = true
