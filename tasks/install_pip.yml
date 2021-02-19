@@ -22,6 +22,12 @@
     virtualenv: "{{ mailman3_install_dir }}"
     extra_args: " --install-option=\"--without-c-extensions\""
 
+- name: Upgrde pip to latest
+  pip:
+    name: pip
+    virtualenv: "{{ mailman3_install_dir }}"
+    state: latest
+
 - name: Install Mailman and Python dependencies
   pip:
     name: "{{ mailman3_packages + mailman3_extra_packages }}"
