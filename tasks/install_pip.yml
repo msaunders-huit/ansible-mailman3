@@ -22,9 +22,11 @@
     virtualenv: "{{ mailman3_install_dir }}"
     extra_args: " --install-option=\"--without-c-extensions\""
 
-- name: Upgrde pip to latest
+- name: Upgrade pip & setuptools to latest
   pip:
-    name: pip
+    name: 
+      - pip
+      - setuptools
     virtualenv: "{{ mailman3_install_dir }}"
     state: latest
 
