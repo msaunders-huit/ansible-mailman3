@@ -10,6 +10,8 @@
   notify:
     - restart mailman3-core service
 
+# core2: need to handle more than one
+
 - name: Create HyperKitty configuration file
   copy:
     content: |

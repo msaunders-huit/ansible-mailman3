@@ -1,6 +1,9 @@
 ;;
 ;;
 ;;
+{% if ansible_hostname == 'mailman-app02' %}
+{% set __mailman3_config_merged = __mailman3_config02_merged %}
+{% endif %}
 
 {% for section in __mailman3_config_merged | sort %}
 [{{ section }}]
