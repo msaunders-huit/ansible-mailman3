@@ -216,6 +216,7 @@ __mailman3_config_default:
     enable: "yes"
     configuration: "{{ mailman3_etc_dir }}/hyperkitty.cfg"
 __mailman3_config_merged: "{{ __mailman3_config_default | combine(mailman3_config | default({}), recursive=True) }}"
+__mailman3_config02_merged: "{{ __mailman3_config_default | combine(mailman3_config | mailman3_config02 | default({}), recursive=True) }}"
 
 __mailman3_django_config_default:
   admins: "{{ mailman3_django_superusers }}"
