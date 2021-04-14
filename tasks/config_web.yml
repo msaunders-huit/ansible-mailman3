@@ -59,13 +59,14 @@
 
 - name: Append Django site config for core2
   blockinfile:
-    insertafter: "DEFAULT_FROM_EMAIL = '{{ mailman3_default_from_user }}@{{ domain }}'"
+    path: "{{ mailman3_django_project_dir }}/settings_{{ mailman3_domains[13] | replace('.', '_') | replace('-', '_') }}.py"
     block: |
       MAILMAN_REST_API_URL = 'http://{{mailman3_core02_api_hostname }}:8001'
-    dest: "{{ mailman3_django_project_dir }}/settings_{{ mailman3_domains[13] | replace('.', '_') | replace('-', '_') }}.py"
-  when: "ansible_hostname == 'mailman-app02'"
   notify:
-    - restart mailman3-web service #TODO: just the ones on this host
+    #TODO: just the ones on this host
+    - restart mailman3-web service
+  tags:
+    - patch
 
 - name: run_once block
   block:
