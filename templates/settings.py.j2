@@ -215,6 +215,8 @@ HAYSTACK_CONNECTIONS = {
 Q_CLUSTER = {
     'timeout': 300,
     'save_limit': 100,
+    'retry': 4500,
+    'max_retries': 1,
     'orm': 'default',
 }
 
@@ -254,31 +256,31 @@ LOGGING = {
         'django.request': {
             #'handlers': ['mail_admins', 'file'],
             'handlers': ['file'],
-            'level': 'INFO',
+            'level': 'ERROR',
             'propagate': True,
         },
         'django': {
             'handlers': ['file'],
-            'level': 'INFO',
+            'level': 'ERROR',
             'propagate': True,
         },
         'django.core.mail': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'propagate': True,
         },
         'hyperkitty': {
             'handlers': ['file'],
-            'level': 'INFO',
+            'level': 'ERROR',
             'propagate': True,
         },
         'postorius': {
             'handlers': ['console', 'file'],
-            'level': 'INFO',
+            'level': 'ERROR',
         },
         'django_mailman3': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'propagate': True,
         },
     },

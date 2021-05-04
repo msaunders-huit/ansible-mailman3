@@ -25,6 +25,8 @@ chmod-socket = 660
 http-socket = {{ getsock(mailman3_http_socket) }}
 {% endif %}
 buffer-size = 8192
+socket-timeout = 300
+post-buffering = 8192
 
 # Enable threading for python
 enable-threads = true
@@ -41,7 +43,7 @@ wsgi-file = wsgi.py
 
 # Setup default number of processes and threads per process.
 master = true
-processes = 16
+processes = 8
 {# threads = 2 #}
 
 # Drop privielges and don't run as root.
