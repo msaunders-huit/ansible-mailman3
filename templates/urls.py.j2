@@ -19,17 +19,13 @@
 
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.contrib.sites.models import Site
 from django.urls import path, reverse_lazy
 from django.views.generic import RedirectView
 
 # Override list_new view to hide lists by default
 from views.list import list_new
 
-import django_cas_ng.views as cas_ng_views
-
-current_site = Site.objects.get_current()
-
+#import django_cas_ng.views as cas_ng_views
 urlpatterns = [
     url(r'^$', RedirectView.as_view(
         url=reverse_lazy('list_index'),
@@ -39,16 +35,14 @@ urlpatterns = [
     url(r'^mailman/', include('postorius.urls')),
     url(r'^archive/', include('hyperkitty.urls')),
     url(r'', include('django_mailman3.urls')),
-    url(r'^mailman/listinfo?/$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}lists/')),
-    url(r'^mailman/listinfo/(?P<path>.*?)?/', RedirectView.as_view(url=f'/{{ mailman3_postorius_root }}lists/%(path)s.{current_site.domain}')),
-    url(r'^mailman/subscribe/(?P<path>.*?)?/', RedirectView.as_view(url=f'/{{ mailman3_postorius_root }}lists/%(path)s.{current_site.domain}')),
-    url(r'^mailman/admin/(?P<path>.*?)?/', RedirectView.as_view(url=f'/{{ mailman3_postorius_root }}lists/%(path)s.{current_site.domain}')),
-    url(r'^mailman/admindb/(?P<path>.*?)?/', RedirectView.as_view(url=f'/{{ mailman3_postorius_root }}lists/%(path)s.{current_site.domain}/held_messages')),
-    url(r'^pipermail/(?P<path>.*?)?/$', RedirectView.as_view(url=f'/{{ mailman3_hyperkitty_root }}list/%(path)s@{current_site.domain}')),
-    url(r'^pipermail/(?P<path>.*?)?/(?P<year>\d{4})-(?P<remainder>.*?)$', RedirectView.as_view(url=f'/{{ mailman3_hyperkitty_root }}list/%(path)s@{current_site.domain}/%(year)s/01/#%(remainder)s')),
-    path('accounts/cas/login/', cas_ng_views.LoginView.as_view(), name='cas_ng_login'),
-    path('accounts/cas/logout/', cas_ng_views.LogoutView.as_view(), name='cas_ng_logout'),
-    path('accounts/cas/callback', cas_ng_views.CallbackView.as_view(), name='cas_ng_proxy_callback'),    
+    url(r'^mailman/listinfo/(?P<path>.*)?/$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}lists/%(path)s.{{ mailman3_domains[4] }}')),
+    url(r'^mailman/listinfo$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}lists/')),
+    url(r'^mailman/admin/(?P<path>.*)?/$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}lists/%(path)s.{{ mailman3_domains[4] }}')),
+    url(r'^mailman/admindb/(?P<path>.*)?/$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}lists/%(path)s.{{ mailman3_domains[4] }}/held_messages')),
+    url(r'^pipermail/(?P<path>.*)?/', RedirectView.as_view(url='/{{ mailman3_hyperkitty_root }}list/%(path)s@{{ mailman3_domains[4] }}')),
+    #path('accounts/cas/login/', cas_ng_views.LoginView.as_view(), name='cas_ng_login'),
+    #path('accounts/cas/logout/', cas_ng_views.LogoutView.as_view(), name='cas_ng_logout'),
+    #path('accounts/cas/callback', cas_ng_views.CallbackView.as_view(), name='cas_ng_proxy_callback'),    
     url(r'^accounts/', include('allauth.urls')),
     # Django admin
     url(r'^admin/', admin.site.urls),

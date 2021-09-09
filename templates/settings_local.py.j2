@@ -64,7 +64,7 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     #'django_mailman3.lib.auth.fedora',
-    'django_cas_ng',
+    #'django_cas_ng',
  {% for provider in __mailman3_django_config_merged.socialaccount_providers | sort %}
     'allauth.socialaccount.providers.{{ provider }}',
 {% endfor %}
@@ -121,7 +121,7 @@ AUTHENTICATION_BACKENDS = (
 
 MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_cas_ng.middleware.CASMiddleware',
+    #'django_cas_ng.middleware.CASMiddleware',
 ]
 
 
