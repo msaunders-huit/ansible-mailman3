@@ -25,7 +25,7 @@ from django.views.generic import RedirectView
 # Override list_new view to hide lists by default
 from views.list import list_new
 
-#import django_cas_ng.views as cas_ng_views
+import django_cas_ng.views as cas_ng_views
 urlpatterns = [
     url(r'^$', RedirectView.as_view(
         url=reverse_lazy('list_index'),
@@ -40,9 +40,9 @@ urlpatterns = [
     url(r'^mailman/admin/(?P<path>.*)?/$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}lists/%(path)s.{{ mailman3_domains[4] }}')),
     url(r'^mailman/admindb/(?P<path>.*)?/$', RedirectView.as_view(url='/{{ mailman3_postorius_root }}lists/%(path)s.{{ mailman3_domains[4] }}/held_messages')),
     url(r'^pipermail/(?P<path>.*)?/', RedirectView.as_view(url='/{{ mailman3_hyperkitty_root }}list/%(path)s@{{ mailman3_domains[4] }}')),
-    #path('accounts/cas/login/', cas_ng_views.LoginView.as_view(), name='cas_ng_login'),
-    #path('accounts/cas/logout/', cas_ng_views.LogoutView.as_view(), name='cas_ng_logout'),
-    #path('accounts/cas/callback', cas_ng_views.CallbackView.as_view(), name='cas_ng_proxy_callback'),    
+    path('accounts/cas/login/', cas_ng_views.LoginView.as_view(), name='cas_ng_login'),
+    path('accounts/cas/logout/', cas_ng_views.LogoutView.as_view(), name='cas_ng_logout'),
+    path('accounts/cas/callback', cas_ng_views.CallbackView.as_view(), name='cas_ng_proxy_callback'),    
     url(r'^accounts/', include('allauth.urls')),
     # Django admin
     url(r'^admin/', admin.site.urls),
