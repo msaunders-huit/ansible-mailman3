@@ -16,12 +16,6 @@
     virtualenv_python: "{{ mailman3_virtualenv_python | default(omit) }}"
     virtualenv_command: "{{ mailman3_virtualenv_command | default(omit) }}"
 
-- name: Install rcssmin without-c-extensions (due to wheel unavailability)
-  pip:
-    name: "rcssmin"
-    virtualenv: "{{ mailman3_install_dir }}"
-    extra_args: " --install-option=\"--without-c-extensions\""
-
 - name: Upgrade pip & setuptools to latest
   pip:
     name: 
