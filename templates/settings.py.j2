@@ -181,12 +181,12 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True # if true: use doesn't need to click a butto
 #
 # django-compressor
 # https://pypi.python.org/pypi/django_compressor
-#
+# https://lists.mailman3.org/archives/list/mailman-users@mailman3.org/message/SBT3ZJ3OE35T4WZRP7ZTLIQTP6SUW5SI/
 COMPRESS_ENABLED = True
 COMPRESS_PRECOMPILERS = (
    ('text/less', 'lessc {infile} {outfile}'),
-   ('text/x-scss', 'sassc -t compressed {infile} {outfile}'),
-   ('text/x-sass', 'sassc -t compressed {infile} {outfile}'),
+   ('text/x-scss', 'pysassc -t compressed {infile} {outfile}'),
+   ('text/x-sass', 'pysassc -t compressed {infile} {outfile}'),
 )
 
 # Needed for debug mode
