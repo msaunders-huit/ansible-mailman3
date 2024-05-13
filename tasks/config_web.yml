@@ -67,6 +67,7 @@
     - restart mailman3-web service
   tags:
     - patch
+  ignore_errors: true
 
 - name: run_once block
   block:
