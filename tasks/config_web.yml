@@ -135,8 +135,8 @@
     when: __mailman3_checkexamplesite_result is changed
     changed_when: true
 
-  become: yes
-  become_user: "{{ mailman3_web_user }}"
+  # become: yes
+  # become_user: "{{ mailman3_web_user }}"
   run_once: yes
   # end run_once block
 
