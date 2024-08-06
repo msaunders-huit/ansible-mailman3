@@ -173,6 +173,7 @@
     - restart mailman3-web service
 
 # This is idempotent so it's safe to do as an always-run task
+# -- but it fails when memcached is enabled!?
 - name: Compress CSS
   django_manage:
     app_path: "{{ mailman3_django_project_dir }}"
