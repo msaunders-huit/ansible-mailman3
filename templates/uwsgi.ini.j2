@@ -25,7 +25,7 @@ chmod-socket = 660
 http-socket = {{ getsock(mailman3_http_socket) }}
 {% endif %}
 buffer-size = 8192
-socket-timeout = 300
+socket-timeout = 10
 post-buffering = 8192
 
 # Enable threading for python
@@ -57,8 +57,8 @@ attach-daemon = ./manage.py qcluster
 
 {% if mailman3_domains is not defined or (site_id | default(-1)) == 0 %}
 # Setup hyperkitty's cron jobs.
-unique-cron = -1 -1 -1 -1 -1 ./manage.py runjobs minutely
-unique-cron = -15 -1 -1 -1 -1 ./manage.py runjobs quarter_hourly
+unique-cron = -5 -1 -1 -1 -1 ./manage.py runjobs minutely
+unique-cron = -45 -1 -1 -1 -1 ./manage.py runjobs quarter_hourly
 unique-cron = 0 -1 -1 -1 -1 ./manage.py runjobs hourly
 unique-cron = 0 0 -1 -1 -1 ./manage.py runjobs daily
 unique-cron = 0 0 1 -1 -1 ./manage.py runjobs monthly
