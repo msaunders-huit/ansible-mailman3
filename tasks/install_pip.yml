@@ -30,12 +30,13 @@
     virtualenv: "{{ mailman3_install_dir }}"
     state: present
     
-- name: Create parent install directory
-  file:
+- name: Recursively fix permissions for install directory
+  ansible.builtin.file:
     path: "{{ mailman3_install_dir }}"
     owner: "{{ __mailman3_user_name }}"
     group: "{{ __mailman3_group_name }}"
-    mode: "0755"
+    mode: "0775"
+    recurse: false
     state: directory
 
 # TODO: This is needed to read settings_local.py from /etc/opt/mailman3, but will it be needed for anything else?
